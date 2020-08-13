@@ -1,14 +1,32 @@
 import requests
-
+from certificate import twitchClientID
 #what shall I do?
 
 
-headers = {
-    'Client-ID': twitchID,
-}
+def getVideo():
+    headers = {
+        'Client-ID': twitchClientID
+    }
+    params = {
+        'id': '707902562'
+    }
 
-params = (
-    ('id', 'AwkwardHelplessSalamanderSwiftRage'),
-)
+    videoresponse = requests.get('https://api.twitch.tv/helix/videos', headers=headers, params=params)
+    return videoresponse.text
 
-response = requests.get('https://api.twitch.tv/helix/clips', headers=headers, params=params)
+def getClip() :
+    headers = {
+        'Client-ID': twitchClientID
+    }
+
+    params = {
+        'broadcaster_id': 'ffff'#,
+        #'after': '',
+        #'before' : '',
+        #'first': ''
+    }
+
+    response = requests.get('https://api.twitch.tv/helix/clips', headers=headers, params=params)
+
+print(getVideo())
+
