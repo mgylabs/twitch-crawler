@@ -1,14 +1,36 @@
 import requests
+from certificate import twitchClientID, clientSecret
+from videoinput import videoID
+from accessToken import token
 
-#what shall I do?
+accessToken = token["access_token"]
 
+def getVideo():
+    headers = {
+        'Client-ID': twitchClientID,
+        'Authorization': 'Bearer '+accessToken
+    }
+    params = {
+        'id': '709618396'
+    }
 
-headers = {
-    'Client-ID': twitchID,
-}
+    videoresponse = requests.get('https://api.twitch.tv/helix/videos', headers=headers, params=params)
+    return videoresponse.text
 
-params = (
-    ('id', 'AwkwardHelplessSalamanderSwiftRage'),
-)
+def getClip() :
+    headers = {
+        'Client-ID': twitchClientID,
+        'Authorization': 'Bearer '+accessToken
+    }
 
-response = requests.get('https://api.twitch.tv/helix/clips', headers=headers, params=params)
+    params = {
+        'broadcaster_id': 'ffff'#,
+        #'after': '',
+        #'before' : '',
+        #'first': ''
+    }
+
+    response = requests.get('https://api.twitch.tv/helix/clips', headers=headers, params=params)
+
+print(getVideo())
+
