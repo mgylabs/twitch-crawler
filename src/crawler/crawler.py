@@ -1,14 +1,17 @@
 import requests
-from certificate import twitchClientID
-#what shall I do?
+from certificate import twitchClientID, clientSecret
+from videoinput import videoID
+from accessToken import token
 
+accessToken = token["access_token"]
 
 def getVideo():
     headers = {
-        'Client-ID': twitchClientID
+        'Client-ID': twitchClientID,
+        'Authorization': 'Bearer '+accessToken
     }
     params = {
-        'id': '707902562'
+        'id': '709618396'
     }
 
     videoresponse = requests.get('https://api.twitch.tv/helix/videos', headers=headers, params=params)
@@ -16,7 +19,8 @@ def getVideo():
 
 def getClip() :
     headers = {
-        'Client-ID': twitchClientID
+        'Client-ID': twitchClientID,
+        'Authorization': 'Bearer '+accessToken
     }
 
     params = {

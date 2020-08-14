@@ -1,19 +1,33 @@
 import requests
-from certificate import twitchClientID
+import time
+from certificate import twitchClientID, clientSecret
 
 #get token
-params = {
-    'client_id': twitchClientID,
-    'redirect_uri': 'http://localhost',
-    'response_type': 'token',
-    'scope': 'clips:edit' #may be added further later for analytics
-}
+def getToken():
+    params = {
+        'client_id': twitchClientID,
+        #'redirect_uri': 'http://localhost',
+        #'response_type': 'token',
+        'client_secret': clientSecret,
+        'grant_type': 'client_credentials',
+        'scope': 'clips:edit' #may be added further later for analytics
+    }
 
-token = requests.get('https://id.twitch.tv/oauth2/authorize', params=params)
-f = open("apirequest.html", 'w')
-f.write(token.text)
-f.close
+    token = requests.post('https://id.twitch.tv/oauth2/token', params=params)
+    #accessToken = token['access_token']
+    return token.text
 
-#send token in api request
+
+#refreshing process needed
+
 
 #validate
+def validateToken():
+    headers = {
+        'Authorization': 'OAuth '+accessToken,
+    }
+
+    response = requests.get('https://id.twitch.tv/oauth2/validate', headers=headers)
+
+f = open('./src/crawler/accessToken.py', 'w')
+f.write('token =' +getToken())
