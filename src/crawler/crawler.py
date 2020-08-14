@@ -1,36 +1,39 @@
 import requests
+import json
 from certificate import twitchClientID, clientSecret
 from videoinput import videoID
 from accessToken import token
+from validate import validateToken
 
 accessToken = token["access_token"]
+#validate token
+validateToken()
 
-def getVideo():
-    headers = {
-        'Client-ID': twitchClientID,
-        'Authorization': 'Bearer '+accessToken
-    }
-    params = {
-        'id': '709618396'
-    }
+#get video
+vidHeaders = {
+    'Client-ID': twitchClientID,
+    'Authorization': 'Bearer '+accessToken
+}
+vidParams = {
+    'id': '709618396'
+}
 
-    videoresponse = requests.get('https://api.twitch.tv/helix/videos', headers=headers, params=params)
-    return videoresponse.text
+videoresponse = requests.get('https://api.twitch.tv/helix/videos', headers=vidHeaders, params=vidParams)
+videoresponse = json.loads(videoresponse.text)
+broadID = videoresponse['data'][0]['user_id']
 
-def getClip() :
-    headers = {
-        'Client-ID': twitchClientID,
-        'Authorization': 'Bearer '+accessToken
-    }
 
-    params = {
-        'broadcaster_id': 'ffff'#,
-        #'after': '',
-        #'before' : '',
-        #'first': ''
-    }
+#get clips
+clipHeaders = {
+    'Client-ID': twitchClientID,
+    'Authorization': 'Bearer '+accessToken
+}
 
-    response = requests.get('https://api.twitch.tv/helix/clips', headers=headers, params=params)
+clipParams = {
+    'broadcaster_id': broadID
+    #'after': '',
+    #'before' : '',
+    #'first': ''
+}
 
-print(getVideo())
-
+response = requests.get('https://api.twitch.tv/helix/clips', headers=clipHeaders, params=clipParams)
