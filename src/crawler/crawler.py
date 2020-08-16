@@ -48,12 +48,18 @@ clipHeaders = {
 
 clipParams = {
     'broadcaster_id': broadID,
-    'first': '5',
+    'first': '100',
     'started_at': vidStarted,
-    'ended_at': vidEnded
 }
 
 clipResponse = requests.get('https://api.twitch.tv/helix/clips', headers=clipHeaders, params=clipParams)
-print(vidStarted)
-print(clipResponse.text)
+clipResponse = json.loads(clipResponse.text)['data']
+clips = []
+for a in range(len(clipResponse)):
+    if clipResponse[a]['video_id'] == videoID:
+        clips.append(clipResponse[a])
+# list of clips created in the video given
+
+#get chat
+
 
