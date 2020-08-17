@@ -1,10 +1,11 @@
 import requests
 import json
+import datetime
+import twitch
 from certificate import twitchClientID, clientSecret
 from videoinput import videoID
 from accessToken import token
 from validate import validateToken
-import datetime
 
 accessToken = token["access_token"]
 #validate token
@@ -59,7 +60,27 @@ for a in range(len(clipResponse)):
     if clipResponse[a]['video_id'] == videoID:
         clips.append(clipResponse[a])
 # list of clips created in the video given
+'''
+{'id': '',
+ 'url': '',
+ 'embed_url': '', 
+ 'broadcaster_id': '',
+ 'broadcaster_name': '',
+ 'creator_id': '', 
+ 'creator_name': '',
+ 'video_id': '',
+ 'game_id': '', 
+ 'language': '', 
+ 'title': '',
+ 'view_count': , 
+ 'created_at': '',
+ 'thumbnail_url': ''}, 
+'''
 
 #get chat
 
-
+helix_api = twitch.Helix(client_id=twitchClientID, bearer_token=accessToken, use_cache=True)
+chats = []
+#chat dictionary nested inside 'chats' list
+for comment in helix_api.video(videoID).comments:
+    chats.append(dict(time=comment.created_at, name=comment.commenter.display_name, message=comment.message.body)) 
