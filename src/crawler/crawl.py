@@ -1,6 +1,7 @@
 import requests
 import json
 import datetime
+import tempfile
 import twitch
 from certificate import twitchClientID, clientSecret
 from videoinput import videoID
