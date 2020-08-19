@@ -3,6 +3,8 @@ import json
 import datetime
 import tempfile
 import twitch
+import itertools
+import time
 from certificate import twitchClientID, clientSecret
 from videoinput import videoID
 from accessToken import token
@@ -13,13 +15,19 @@ accessToken = token["access_token"]
 validateToken()
 
 def timeConvert(time):
-
-    time = time.split('h') #4, 8m12s
-    time[1] = time[1].split('m')[0]
-
-    time = datetime.time(int(time[0]), int(time[1])+1) 
-    time = '{0.hour:02}:{0.minute:02}'.format(time)
-
+    conv = time.replace('h', ':')
+    conv = conv.replace('m', ':')
+    conv = conv.replace('s', '')
+    conv = conv.split(':')
+    hour, minute = 0, 0
+    if 'h' in time:
+        hour = conv[0]
+        if 'm' in time:
+            minute = conv[1]
+    elif 'm' in time: 
+        minute = conv[0]
+    conv = datetime.time(int(hour), int(minute)+1)
+    time = '{0.hour:02}:{0.minute:02}'.format(conv)
     return time
 
 #get video
@@ -60,6 +68,7 @@ clips = []
 for a in range(len(clipResponse)):
     if clipResponse[a]['video_id'] == videoID:
         clips.append(clipResponse[a])
+print(clips[0])
 # list of clips created in the video given
 '''
 {'id': '',
@@ -79,9 +88,12 @@ for a in range(len(clipResponse)):
 '''
 
 #get chat
-
+start = time.time()
 helix_api = twitch.Helix(client_id=twitchClientID, bearer_token=accessToken, use_cache=True)
 chats = []
 #chat dictionary nested inside 'chats' list
 for comment in helix_api.video(videoID).comments:
     chats.append(dict(time=comment.created_at, name=comment.commenter.display_name, message=comment.message.body)) 
+print(chats[0])
+print(chats[-1])
+print(time.time()-start)
