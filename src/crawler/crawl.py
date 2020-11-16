@@ -94,6 +94,4 @@ chats = []
 #chat dictionary nested inside 'chats' list
 for comment in helix_api.video(videoID).comments:
     chats.append(dict(time=comment.created_at, name=comment.commenter.display_name, message=comment.message.body)) 
-print(chats[:10])
-print(chats[-1])
 print(time.time()-start)

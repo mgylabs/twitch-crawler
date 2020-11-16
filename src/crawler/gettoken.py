@@ -17,4 +17,4 @@ token = requests.post('https://id.twitch.tv/oauth2/token', params=params)
 token = token.text
 
 f = open('./src/crawler/accessToken.py', 'w')
-f.write('token =' +getToken())
+f.write('token =' + token)
