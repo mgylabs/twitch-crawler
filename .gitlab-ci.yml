@@ -1,0 +1,18 @@
+stages:
+  - deploy
+
+release:
+  image: python:latest
+  stage: deploy
+  script:
+    - pip install -r requirements.txt -t ./src
+    - rm -rf ./src/*-info
+    - mkdir ${CI_PROJECT_NAME}-master-${CI_COMMIT_SHA}
+    - mv -f ./src ${CI_PROJECT_NAME}-master-${CI_COMMIT_SHA}/
+  artifacts:
+    name: ${CI_PROJECT_NAME}
+    expire_in: 1 month
+    paths:
+      - ${CI_PROJECT_NAME}-master-${CI_COMMIT_SHA}/**/*
+  only:
+    - master

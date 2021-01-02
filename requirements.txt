@@ -1,0 +1,50 @@
+twitch-python==0.0.18
+
+
+'''
+#chat highlights
+
+highlightWeight = dict()
+i=0
+while i+1 < len(chats):
+    a=1
+    while rfcCut(chats[i]["time"]) == rfcCut(chats[i+1]["time"]):
+        a+=1
+        i+=1
+    highlightWeight[rfcCut(chats[i]["time"])] = a
+    i+=1
+
+#highlight weight: clips
+
+{'id': '',
+ 'url': '',
+ 'embed_url': '', 
+ 'broadcaster_id': '',
+ 'broadcaster_name': '',
+ 'creator_id': '', 
+ 'creator_name': '',
+ 'video_id': '',
+ 'game_id': '', 
+ 'language': '', 
+ 'title': '',
+ 'view_count': , 
+ 'created_at': '',
+ 'thumbnail_url': ''}, 
+
+
+for clip in clips:
+    clipTime = clip['created_at']
+    highlightWeight[rfcCut(clip['created_at'])] += (clip['view_count'] / 60)
+
+
+#graph
+
+
+
+#highlights
+
+
+#highligt weight: chat amount
+#highlight weight: chat amount compared
+
+'''
