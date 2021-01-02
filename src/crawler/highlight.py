@@ -1,14 +1,15 @@
-import crawl
+from crawl import twitchCrawler
 import datetime
 from matplotlib import pyplot as plt
 
-chats = crawl.chats
-clips = crawl.clips
+twitchCrawler = twitchCrawler()
+clips = twitchCrawler.getClips()
+chats = twitchCrawler.getChats()
 
 #calculate highlight
 
 
-#eliminate miliseconds
+#eliminate miliseconds create rfc class?
 def rfcCut(rfc):
     rfc = rfc[:rfc.find('.')]
     return rfc
