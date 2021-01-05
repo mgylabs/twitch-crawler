@@ -490,3 +490,4 @@ MigrationBackup/
 #token
 src/crawler/certificate.py
 src/crawler/accessToken.py
+src/crawler/chromedriver.exe

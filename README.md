@@ -11,7 +11,9 @@ This program uses OAuth client credential flow in order to retrieve access token
 
 2. Run gettoken.py first in order to recieve access token. This will make accessToken.py by itself
 
-3. Run crawler.py
+3. Add chromedriver.exe under src/crawler (download it at https://chromedriver.chromium.org/)
+
+4. Run crawler.py
 
 # Requirements
 This program requires a client ID and client secret in order to access twitch API

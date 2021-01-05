@@ -5,6 +5,8 @@ import tempfile
 import twitch
 import itertools
 import time
+import pandas
+from selenium import webdriver
 from certificate import twitchClientID, clientSecret
 from videoinput import videoID
 from accessToken import token
@@ -65,9 +67,18 @@ class twitchCrawler():
             'first': '100',
             'started_at': vidStarted,
         }
+        options = webdriver.ChromeOptions()#to be edited
+        options.add_argument("headless")#to be edited
 
         clipResponse = requests.get('https://api.twitch.tv/helix/clips', headers=clipHeaders, params=clipParams)
         clipResponse = json.loads(clipResponse.text)['data']
+        '''
+        driver = webdriver.Chrome(executable_path='src\crawler\chromedriver.exe', chrome_options=options)
+        driver.get(url=clipURL)
+        href = driver.find_element_by_xpath('//*[@id="root"]/div/div/div/div[3]/div/div/main/div/div/div[2]/div[2]/div[3]/div/div/div/a')
+        starts_at = href.get_attribute('href')
+        '''
+
         clips = []
         for a in range(len(clipResponse)):
             if clipResponse[a]['video_id'] == videoID:
@@ -78,9 +89,18 @@ class twitchCrawler():
     def getChats(self):
         start = time.time()
         helix_api = twitch.Helix(client_id=twitchClientID, bearer_token=self.accessToken, use_cache=True)
-        chats = []
+        chats = {'created_at': [], 'name': [], 'message': []}
         #chat dictionary nested inside 'chats' list
         for comment in helix_api.video(videoID).comments:
-            chats.append(dict(time=comment.created_at, name=comment.commenter.display_name, message=comment.message.body)) 
+            #chats.append(dict(time=comment.created_at, name=comment.commenter.display_name, message=comment.message.body))
+            chats['created_at'].append(comment.created_at)
+            chats['name'].append(comment.commenter.display_name)
+            chats['message'].append(comment.message.body)
+        print(time.time()-start)
+        df = pandas.DataFrame(chats)
+        df.to_csv('src/crawler/chatfiles/chats.csv', header=False, index=False) 
+        return df
 
-        return chats
+crawl = twitchCrawler()
+print(crawl.getChats().head())
+
