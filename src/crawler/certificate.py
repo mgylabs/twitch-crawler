@@ -1,0 +1,2 @@
+twitchClientID = ''
+clientSecret = ''
